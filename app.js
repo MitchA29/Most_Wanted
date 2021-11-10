@@ -39,6 +39,8 @@ function mainMenu(person, people){
   if (person.length == 1){
     let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
 
+  }else{
+    let displayOption = alert("Here are the people found," + person[0].firstName + " " + person[0].lastName, autoValid)
   }
 
   
@@ -78,6 +80,13 @@ function searchByCriteria(people){
   let heightMatches = [];
   let weightMatches = [];
   let masterMatches = [];
+  //Do you know their gender?
+  //No? continue
+  //Yes? search by gender, this becomes our new "people" set
+
+  //Do you know their occupation?
+  //No? continue
+  //Yes, searching people.
   genderMatches = searchByGender(people);
   if (genderMatches == "unknown"){
     occupationMatches = searchByOccupation(people);
