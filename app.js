@@ -16,7 +16,7 @@ function app(people){
       break;
     case 'no':
       // TODO: search by traits
-      searchResults = searchByCriteria(people);
+      searchResults = recursiveTraitSearch(people);
       break;
       default:
     app(people); // restart app
@@ -86,34 +86,34 @@ function searchByCriteria(people){
   //Do you know their occupation?
   //No? continue
   //Yes, searching people.
-  genderMatches = searchByGender(people);
-  if (genderMatches == "unknown"){
-    occupationMatches = searchByOccupation(people);
-    if (occupationMatches == "unknown"){
-      eyeColorMatches = searchByEyeColor(people);
-      if (eyeColorMatches == "unknown"){
-        heightMatches = searchByOccupation(people);
-        if (heightMatches == "unknown"){
-          weightMatches = searchByOccupation(people);
-          if (weightMatches == "unknown"){
-            masterMatches = searchByOccupation(people);
-          }else{
-            masterMatches.push = searchByOccupation(weightMatches);
-          }
-         }else{
-           weightMatches = searchByOccupation(heightMatches);
-         }
-      }else{
-        heightMatches = searchByOccupation(eyeColorMatches);
-      }
-    }else{
-      eyeColorMatches = searchByEyeColor(occupationMatches);
-    }
-  }else{
-    occupationMatches = searchByOccupation(genderMatches);
-  }
-  return masterMatches;
-}
+//   genderMatches = searchByGender(people);
+//   if (genderMatches == "unknown"){
+//     occupationMatches = searchByOccupation(people);
+//     if (occupationMatches == "unknown"){
+//       eyeColorMatches = searchByEyeColor(people);
+//       if (eyeColorMatches == "unknown"){
+//         heightMatches = searchByOccupation(people);
+//         if (heightMatches == "unknown"){
+//           weightMatches = searchByOccupation(people);
+//           if (weightMatches == "unknown"){
+//             masterMatches = searchByOccupation(people);
+//           }else{
+//             masterMatches.push = searchByOccupation(weightMatches);
+//           }
+//          }else{
+//            weightMatches = searchByOccupation(heightMatches);
+//          }
+//       }else{
+//         heightMatches = searchByOccupation(eyeColorMatches);
+//       }
+//     }else{
+//       eyeColorMatches = searchByEyeColor(occupationMatches);
+//     }
+//   }else{
+//     occupationMatches = searchByOccupation(genderMatches);
+//   }
+//   return masterMatches;
+// }
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people){
@@ -309,3 +309,42 @@ function customValidation(input){
 }
 
 //#endregion
+
+function recursiveTraitSearch(mm,people){
+  let masterMatches = mm  //array of objects
+  
+  //basecase
+ if (masterMatches.length === 1)
+  {
+    return masterMatches
+  } 
+  else if (masterMatches.length === 0){
+    recursiveTraitSearch(people,people)
+  } 
+  
+  
+  //recursive
+  displayPeople(masterMatches)
+  let userInput = prompt("What trait do you want to search for? \n 1.Hieght \n 2.Weight \n 3.Occupation \n 4.Eye Color \n 5.Gender")
+  switch (userInput) {
+    case "1": 
+      masterMatches = searchByHeight(masterMatches)
+      break;
+    case "2":
+    masterMatches = searchByWeight(masterMatches)
+      break;
+    case "3":
+    masterMatches = searchByOccupation(masterMatches)
+      break;
+    case "4":
+    masterMatches = searchByEyeColor(masterMatches)   
+      break;
+    case "5":
+    masterMatches = searchByGender(masterMatches)
+      break;
+  
+    default: recursiveTraitSearch(masterMatches)
+      break;
+  }
+  recursiveTraitSearch(masterMatches)
+}
