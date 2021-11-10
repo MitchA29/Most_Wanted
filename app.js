@@ -36,15 +36,18 @@ function mainMenu(person, people){
     alert("Could not find that individual.");
     return app(people); // restart
   }
+  if (person.length == 1){
+    let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+  }else{
+    let
+  }
 
-  let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+  
 
   switch(displayOption){
     case "info":
     // TODO: get person's info
     return displayPerson(person);
-
-    break;
     case "family":
     // TODO: get person's family
     displayPersonFamily(person,people);
@@ -70,13 +73,38 @@ function mainMenu(person, people){
 //#region 
 
 function searchByCriteria(people){
-  let genderMatches = searchByGender(people);
-  let occupationMatches = searchByOccupation(people);
-  let eyeColorMatches = searchByEyeColor(people);
-  let heightMatches = searchByHeight(people);
-  let weightMatches = searchByWeight(people);
-  let masterMatches;
-  masterMatches.push(genderMatches,occupationMatches,eyeColorMatches,heightMatches,weightMatches)
+  let genderMatches = [];
+  let occupationMatches = [];
+  let eyeColorMatches = [];
+  let heightMatches = [];
+  let weightMatches = [];
+  let masterMatches = [];
+  genderMatches = searchByGender(people);
+  if (genderMatches == "unknown"){
+    occupationMatches = searchByOccupation(people);
+    if (occupationMatches == "unknown"){
+      eyeColorMatches = searchByEyeColor(people);
+      if (eyeColorMatches == "unknown"){
+        heightMatches = searchByOccupation(people);
+        if (heightMatches == "unknown"){
+          weightMatches = searchByOccupation(people);
+          if (weightMatches == "unknown"){
+            masterMatches = searchByOccupation(people);
+          }else{
+            masterMatches.push = searchByOccupation(weightMatches);
+          }
+         }else{
+           weightMatches = searchByOccupation(heightMatches);
+         }
+      }else{
+        heightMatches = searchByOccupation(eyeColorMatches);
+      }
+    }else{
+      eyeColorMatches = searchByEyeColor(occupationMatches);
+    }
+  }else{
+    occupationMatches = searchByOccupation(genderMatches);
+  }
   return masterMatches;
 }
 
@@ -104,28 +132,79 @@ function searchByEyeColor(people){
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.eyeColor === eyeColor){
       return true;
-    }
-    else{
+    }else{
       return false;
     }
   })
+  if (eyeColor == "unknown"){
+    return "unknown";
+  }
   return foundPerson;
 }
 
 function searchByGender(people){
-  pass
+  let gender = promptFor("What is the person's gender?(put 'unknown' if unknown)", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if(potentialMatch.gender === gender){
+      return true;
+    }else{
+      return false;
+    }
+  })
+  if (gender == "unknown"){
+    return "unknown";
+  }
+  return foundPerson;
 }
 
 function searchByHeight(people){
-  pass
+
+  let height = promptFor("What is the person's height? (put 'unknown' if unknown)",autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if(potentialMatch.height === height){
+      return true;
+    }else{
+      return false;
+    }
+  })
+  if (height == "unknown"){
+    return "unknown";
+  }
+  return foundPerson;
 }
 
 function searchByWeight(people){
-  pass
+  let weight = promptFor("What is the person's weight?(put 'unknown' if unknown)", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if(potentialMatch.weight === weight){
+      return true;
+    }else{
+      return false;
+    }
+  })
+  if (weight == "unknown"){
+    return "unknown";
+  }
+  return foundPerson;
 }
 
 function searchByOccupation(people){
-  pass
+  let occupation = promptFor("What is the person's occupation?(put 'unknown' if unknown)", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if(potentialMatch.occupation === occupation){
+      return true;
+    }else{
+      return false;
+    }
+  })
+  if (occupation == "unknown"){
+    return "unknown";
+  }
+  return foundPerson;
 }
 
 //TODO: add other trait filter functions here.
@@ -153,7 +232,7 @@ function displayPerson(person){
   personInfo += "Last Name: " + person[0].lastName + "\n";
   personInfo += "Height: " +person[0].height + "\n";
   personInfo += "Weight: " +person[0].weight + "\n";
-  personInfo += "Age: " +person[0].age + "\n";
+  personInfo += "Date of Birth: " +person[0].dob + "\n";
   personInfo += "Occupation: " +person[0].occupation + "\n";
   personInfo += "Eye Color: " +person[0].eyeColor + "\n";
   // TODO: finish getting the rest of the information to display.
