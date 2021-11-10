@@ -85,7 +85,7 @@ function searchByCriteria(people){
 
   //Do you know their occupation?
   //No? continue
-  //Yes, searching people
+  //Yes, searching people.
   genderMatches = searchByGender(people);
   if (genderMatches == "unknown"){
     occupationMatches = searchByOccupation(people);
