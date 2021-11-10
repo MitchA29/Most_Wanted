@@ -38,8 +38,7 @@ function mainMenu(person, people){
   }
   if (person.length == 1){
     let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
-  }else{
-    let
+
   }
 
   
