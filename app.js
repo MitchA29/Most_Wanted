@@ -31,16 +31,13 @@ function app(people){
 function mainMenu(person, people){
 
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
-
+  let displayOption;
   if(!person){
     alert("Could not find that individual.");
     return app(people); // restart
   }
   if (person.length == 1){
-    let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
-
-  }else{
-    let displayOption = alert("Here are the people found," + person[0].firstName + " " + person[0].lastName, autoValid)
+    displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
   }
 
   
@@ -48,13 +45,15 @@ function mainMenu(person, people){
   switch(displayOption){
     case "info":
     // TODO: get person's info
-    return displayPerson(person);
+      displayPerson(person);
+      break;
     case "family":
     // TODO: get person's family
     displayPersonFamily(person,people);
     break;
     case "descendants":
     // TODO: get person's descendants
+    displayPersonDescendants(person,people);
     break;
     case "restart":
     app(people); // restart
@@ -93,7 +92,14 @@ function searchByName(people){
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 function searchByEyeColor(people){
-  let eyeColor = promptFor("What is the person's eye color?(put 'unknown' if unknown)", autoValid);
+  let possibleColors = ["brown","blue","black","hazel","green"]
+  let eyeColor = promptFor("What is the person's eye color?", autoValid);
+  for (let i = 0; i < 5; i++){
+    if (eyeColor !== possibleColors[i]){
+      searchByEyeColor(people);
+    }
+
+  }
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.eyeColor === eyeColor){
@@ -102,14 +108,11 @@ function searchByEyeColor(people){
       return false;
     }
   })
-  if (eyeColor == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByGender(people){
-  let gender = promptFor("What is the person's gender?(put 'unknown' if unknown)", autoValid);
+  let gender = promptFor("What is the person's gender?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.gender === gender){
@@ -118,15 +121,12 @@ function searchByGender(people){
       return false;
     }
   })
-  if (gender == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByHeight(people){
 
-  let height = promptFor("What is the person's height? (put 'unknown' if unknown)",autoValid);
+  let height = promptFor("What is the person's height?",autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.height == height){
@@ -135,14 +135,11 @@ function searchByHeight(people){
       return false;
     }
   })
-  if (height == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByWeight(people){
-  let weight = promptFor("What is the person's weight?(put 'unknown' if unknown)", autoValid);
+  let weight = promptFor("What is the person's weight?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.weight == weight){
@@ -151,14 +148,11 @@ function searchByWeight(people){
       return false;
     }
   })
-  if (weight == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByOccupation(people){
-  let occupation = promptFor("What is the person's occupation?(put 'unknown' if unknown)", autoValid);
+  let occupation = promptFor("What is the person's occupation?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.occupation === occupation){
@@ -167,9 +161,6 @@ function searchByOccupation(people){
       return false;
     }
   })
-  if (occupation == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
@@ -206,22 +197,76 @@ function displayPerson(person){
 }
 
 function displayPersonFamily(person, people){
-  let family = []
-  let foundFamilyID;
-  if (person[0].currentSpouse != ""){
-    foundFamilyID = person[0].currentSpouse;
-  }
-  let foundPerson = people.filter(function(familyMember){
-    if(familyMember.id === foundFamilyID){
-      return true;
+  let family = people
+  family = people.filter(function(potentialMatch){
+    if(potentialMatch.parents[0] === person[0].parents[0] && potentialMatch.parents.length > 0){
+        if (potentialMatch.id === person[0].id){
+          return false;
+        }else{
+          return true;
+        }
     }else{
-      return false;
+      if (potentialMatch.currentSpouse === person[0].id){
+        return true;
+      }
+      else if (potentialMatch.firstName === person[0].firstName){
+        if(potentialMatch.id === person[0].id){
+          return false;
+        }else{
+          return true;
+        }
+      }
+      else if (person[0].parents[0] === potentialMatch.id){
+        return true;
+      }
+      else if (person[0].parents[1] === potentialMatch.id){
+        return true;
+      }else{
+        return false;
+      }
     }
   })
-  family.push(foundPerson)
-  return family;
-
+  displayPeople(family);
 }
+
+
+function displayPersonDescendants(person, people){
+  let descendants = people
+  descendants = people.filter(function(potentialMatch){
+    if (potentialMatch.parents[0] === person[0].id || potentialMatch.parents[1] === person[0].id){
+      if(potentialMatch.id === person[0].id){
+        return false;
+      }else{
+      return true;
+      }
+    }
+  })
+  displayPeople(descendants);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //#endregion
 
@@ -245,6 +290,7 @@ function promptFor(question, valid){
   return response;
 }
 
+
 // helper function/callback to pass into promptFor to validate yes/no answers.
 function yesNo(input){
   if(input.toLowerCase() == "yes" || input.toLowerCase() == "no"){
@@ -264,6 +310,7 @@ function autoValid(input){
 //Unfinished validation function you can use for any of your custom validation callbacks.
 //can be used for things like eye color validation for example.
 function customValidation(input){
+  pass
   
 }
 
@@ -273,16 +320,12 @@ function recursiveTraitSearch(mm,people){
   let masterMatches = mm  //array of objects
   
   //basecase
- if (masterMatches.length === 1)
-  {
-    return masterMatches
-  } 
-  else if (masterMatches.length === 0){
-    recursiveTraitSearch(people,people)
-  } 
-  
-  
+  if (masterMatches.length == 1){
+    return masterMatches;
+  }
+
   //recursive
+<<<<<<< HEAD
   displayPeople(masterMatches)
   let userInput = prompt("What trait do you want to search for? \n 1.Hieght \n 2.Weight \n 3.Occupation \n 4.Eye Color \n 5.Gender")
   switch (userInput) {
@@ -304,6 +347,32 @@ function recursiveTraitSearch(mm,people){
   
     default: recursiveTraitSearch(masterMatches)
       break;
+=======
+  let userInput;
+  while(userInput != "6"){
+    displayPeople(masterMatches);
+    userInput = prompt("What trait do you want to search for? \n 1. Height \n 2. Weight \n 3. Occupation \n 4. Eye Color \n 5. Gender \n 6. for Done");
+    switch (userInput){
+      case "1": 
+        masterMatches = searchByHeight(masterMatches);
+        break;
+      case "2":
+      masterMatches = searchByWeight(masterMatches);
+        break;
+      case "3":
+      masterMatches = searchByOccupation(masterMatches);
+        break;
+      case "4":
+      masterMatches = searchByEyeColor(masterMatches);  
+        break;
+      case "5":
+      masterMatches = searchByGender(masterMatches);
+        break;
+    
+      default:
+        break;
+    }
+>>>>>>> 6a7b6fbf6a9074a334522221f63400d7369fe768
   }
-  recursiveTraitSearch(masterMatches)
+  return masterMatches
 }
