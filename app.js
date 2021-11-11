@@ -73,48 +73,6 @@ function mainMenu(person, people){
 /////////////////////////////////////////////////////////////////
 //#region 
 
-function searchByCriteria(people){
-  let genderMatches = [];
-  let occupationMatches = [];
-  let eyeColorMatches = [];
-  let heightMatches = [];
-  let weightMatches = [];
-  let masterMatches = [];
-  //Do you know their gender?
-  //No? continue
-  //Yes? search by gender, this becomes our new "people" set
-
-  //Do you know their occupation?
-  //No? continue
-  //Yes, searching people.
-//   genderMatches = searchByGender(people);
-//   if (genderMatches == "unknown"){
-//     occupationMatches = searchByOccupation(people);
-//     if (occupationMatches == "unknown"){
-//       eyeColorMatches = searchByEyeColor(people);
-//       if (eyeColorMatches == "unknown"){
-//         heightMatches = searchByOccupation(people);
-//         if (heightMatches == "unknown"){
-//           weightMatches = searchByOccupation(people);
-//           if (weightMatches == "unknown"){
-//             masterMatches = searchByOccupation(people);
-//           }else{
-//             masterMatches.push = searchByOccupation(weightMatches);
-//           }
-//          }else{
-//            weightMatches = searchByOccupation(heightMatches);
-//          }
-//       }else{
-//         heightMatches = searchByOccupation(eyeColorMatches);
-//       }
-//     }else{
-//       eyeColorMatches = searchByEyeColor(occupationMatches);
-//     }
-//   }else{
-//     occupationMatches = searchByOccupation(genderMatches);
-//   }
-//   return masterMatches;
-// }
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people){
@@ -171,7 +129,7 @@ function searchByHeight(people){
   let height = promptFor("What is the person's height? (put 'unknown' if unknown)",autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
-    if(potentialMatch.height === height){
+    if(potentialMatch.height == height){
       return true;
     }else{
       return false;
@@ -187,7 +145,7 @@ function searchByWeight(people){
   let weight = promptFor("What is the person's weight?(put 'unknown' if unknown)", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
-    if(potentialMatch.weight === weight){
+    if(potentialMatch.weight == weight){
       return true;
     }else{
       return false;
@@ -338,7 +296,7 @@ function recursiveTraitSearch(mm,people){
     masterMatches = searchByOccupation(masterMatches)
       break;
     case "4":
-    masterMatches = searchByEyeColor(masterMatches)   
+    masterMatches = searchByEyeColor(masterMatches)
       break;
     case "5":
     masterMatches = searchByGender(masterMatches)
