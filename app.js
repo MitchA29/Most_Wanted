@@ -38,9 +38,6 @@ function mainMenu(person, people){
   }
   if (person.length == 1){
     let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
-
-  }else{
-    let displayOption = alert("Here are the people found," + person[0].firstName + " " + person[0].lastName, autoValid)
   }
 
   
@@ -73,48 +70,6 @@ function mainMenu(person, people){
 /////////////////////////////////////////////////////////////////
 //#region 
 
-function searchByCriteria(people){
-  let genderMatches = [];
-  let occupationMatches = [];
-  let eyeColorMatches = [];
-  let heightMatches = [];
-  let weightMatches = [];
-  let masterMatches = [];
-  //Do you know their gender?
-  //No? continue
-  //Yes? search by gender, this becomes our new "people" set
-
-  //Do you know their occupation?
-  //No? continue
-  //Yes, searching people.
-//   genderMatches = searchByGender(people);
-//   if (genderMatches == "unknown"){
-//     occupationMatches = searchByOccupation(people);
-//     if (occupationMatches == "unknown"){
-//       eyeColorMatches = searchByEyeColor(people);
-//       if (eyeColorMatches == "unknown"){
-//         heightMatches = searchByOccupation(people);
-//         if (heightMatches == "unknown"){
-//           weightMatches = searchByOccupation(people);
-//           if (weightMatches == "unknown"){
-//             masterMatches = searchByOccupation(people);
-//           }else{
-//             masterMatches.push = searchByOccupation(weightMatches);
-//           }
-//          }else{
-//            weightMatches = searchByOccupation(heightMatches);
-//          }
-//       }else{
-//         heightMatches = searchByOccupation(eyeColorMatches);
-//       }
-//     }else{
-//       eyeColorMatches = searchByEyeColor(occupationMatches);
-//     }
-//   }else{
-//     occupationMatches = searchByOccupation(genderMatches);
-//   }
-//   return masterMatches;
-// }
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people){
@@ -135,7 +90,7 @@ function searchByName(people){
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 function searchByEyeColor(people){
-  let eyeColor = promptFor("What is the person's eye color?(put 'unknown' if unknown)", autoValid);
+  let eyeColor = promptFor("What is the person's eye color?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.eyeColor === eyeColor){
@@ -144,14 +99,11 @@ function searchByEyeColor(people){
       return false;
     }
   })
-  if (eyeColor == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByGender(people){
-  let gender = promptFor("What is the person's gender?(put 'unknown' if unknown)", autoValid);
+  let gender = promptFor("What is the person's gender?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.gender === gender){
@@ -160,47 +112,38 @@ function searchByGender(people){
       return false;
     }
   })
-  if (gender == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByHeight(people){
 
-  let height = promptFor("What is the person's height? (put 'unknown' if unknown)",autoValid);
+  let height = promptFor("What is the person's height?",autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
-    if(potentialMatch.height === height){
+    if(potentialMatch.height == height){
       return true;
     }else{
       return false;
     }
   })
-  if (height == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByWeight(people){
-  let weight = promptFor("What is the person's weight?(put 'unknown' if unknown)", autoValid);
+  let weight = promptFor("What is the person's weight?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
-    if(potentialMatch.weight === weight){
+    if(potentialMatch.weight == weight){
       return true;
     }else{
       return false;
     }
   })
-  if (weight == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
 function searchByOccupation(people){
-  let occupation = promptFor("What is the person's occupation?(put 'unknown' if unknown)", autoValid);
+  let occupation = promptFor("What is the person's occupation?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.occupation === occupation){
@@ -209,9 +152,6 @@ function searchByOccupation(people){
       return false;
     }
   })
-  if (occupation == "unknown"){
-    return "unknown";
-  }
   return foundPerson;
 }
 
@@ -287,6 +227,7 @@ function promptFor(question, valid){
   return response;
 }
 
+
 // helper function/callback to pass into promptFor to validate yes/no answers.
 function yesNo(input){
   if(input.toLowerCase() == "yes" || input.toLowerCase() == "no"){
@@ -306,6 +247,7 @@ function autoValid(input){
 //Unfinished validation function you can use for any of your custom validation callbacks.
 //can be used for things like eye color validation for example.
 function customValidation(input){
+  pass
   
 }
 
@@ -315,37 +257,34 @@ function recursiveTraitSearch(mm,people){
   let masterMatches = mm  //array of objects
   
   //basecase
- if (masterMatches.length === 1)
-  {
-    return masterMatches
+  if (masterMatches.length == 1){
+    return masterMatches;
+  }else if (masterMatches.length === 0){
+    recursiveTraitSearch(people,people);
   } 
-  else if (masterMatches.length === 0){
-    recursiveTraitSearch(people,people)
-  } 
-  
-  
+
   //recursive
-  displayPeople(masterMatches)
-  let userInput = prompt("What trait do you want to search for? \n 1.Hieght \n 2.Weight \n 3.Occupation \n 4.Eye Color \n 5.Gender")
-  switch (userInput) {
+  displayPeople(masterMatches);
+  let userInput = prompt("What trait do you want to search for? \n 1. Height \n 2. Weight \n 3. Occupation \n 4. Eye Color \n 5. Gender");
+  switch (userInput){
     case "1": 
-      masterMatches = searchByHeight(masterMatches)
+      masterMatches = searchByHeight(masterMatches);
       break;
     case "2":
-    masterMatches = searchByWeight(masterMatches)
+    masterMatches = searchByWeight(masterMatches);
       break;
     case "3":
-    masterMatches = searchByOccupation(masterMatches)
+    masterMatches = searchByOccupation(masterMatches);
       break;
     case "4":
-    masterMatches = searchByEyeColor(masterMatches)   
+    masterMatches = searchByEyeColor(masterMatches);  
       break;
     case "5":
-    masterMatches = searchByGender(masterMatches)
+    masterMatches = searchByGender(masterMatches);
       break;
   
-    default: recursiveTraitSearch(masterMatches)
+    default: recursiveTraitSearch(masterMatches);
       break;
   }
-  recursiveTraitSearch(masterMatches)
+  recursiveTraitSearch(masterMatches);
 }
