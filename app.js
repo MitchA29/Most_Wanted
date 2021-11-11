@@ -96,7 +96,7 @@ function searchByEyeColor(people){
   let eyeColor = promptFor("What is the person's eye color?", autoValid);
   for (let i = 0; i < 5; i++){
     if (eyeColor !== possibleColors[i]){
-      searchByEyeColor(people);
+      recursiveTraitSearch(people);
     }
 
   }
@@ -113,7 +113,10 @@ function searchByEyeColor(people){
 
 function searchByGender(people){
   let gender = promptFor("What is the person's gender?", autoValid);
-
+  if (gender !== "male" && gender !== "female"){
+    recursiveTraitSearch(people)
+  }
+  
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.gender === gender){
       return true;
@@ -125,8 +128,10 @@ function searchByGender(people){
 }
 
 function searchByHeight(people){
-
   let height = promptFor("What is the person's height?",autoValid);
+  if(typeof height !== 'number' ){
+    recursiveTraitSearch(people)
+  }
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.height == height){
@@ -140,6 +145,9 @@ function searchByHeight(people){
 
 function searchByWeight(people){
   let weight = promptFor("What is the person's weight?", autoValid);
+  if(typeof weight !== 'number' ){
+    recursiveTraitSearch(people)
+  }
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.weight == weight){
@@ -153,7 +161,12 @@ function searchByWeight(people){
 
 function searchByOccupation(people){
   let occupation = promptFor("What is the person's occupation?", autoValid);
-
+  let possibleJobs= ["programmer", "assistant", "landscaper","nurse","student", "doctor", "architect", "politician",]
+  for (let i = 0; i < 8; i++){
+    if (occupation !== possibleJobs[i]){
+      recursiveTraitSearch(people);
+    }
+  }
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.occupation === occupation){
       return true;
@@ -244,30 +257,6 @@ function displayPersonDescendants(person, people){
   displayPeople(descendants);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //#endregion
 
 
@@ -325,29 +314,7 @@ function recursiveTraitSearch(mm,people){
   }
 
   //recursive
-<<<<<<< HEAD
-  displayPeople(masterMatches)
-  let userInput = prompt("What trait do you want to search for? \n 1.Hieght \n 2.Weight \n 3.Occupation \n 4.Eye Color \n 5.Gender")
-  switch (userInput) {
-    case "1": 
-      masterMatches = searchByHeight(masterMatches)
-      break;
-    case "2":
-    masterMatches = searchByWeight(masterMatches)
-      break;
-    case "3":
-    masterMatches = searchByOccupation(masterMatches)
-      break;
-    case "4":
-    masterMatches = searchByEyeColor(masterMatches)
-      break;
-    case "5":
-    masterMatches = searchByGender(masterMatches)
-      break;
-  
-    default: recursiveTraitSearch(masterMatches)
-      break;
-=======
+ 
   let userInput;
   while(userInput != "6"){
     displayPeople(masterMatches);
@@ -372,7 +339,7 @@ function recursiveTraitSearch(mm,people){
       default:
         break;
     }
->>>>>>> 6a7b6fbf6a9074a334522221f63400d7369fe768
+
   }
   return masterMatches
 }
