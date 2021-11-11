@@ -31,13 +31,13 @@ function app(people){
 function mainMenu(person, people){
 
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
-
+  let displayOption;
   if(!person){
     alert("Could not find that individual.");
     return app(people); // restart
   }
   if (person.length == 1){
-    let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+    displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
   }
 
   
@@ -45,7 +45,8 @@ function mainMenu(person, people){
   switch(displayOption){
     case "info":
     // TODO: get person's info
-    return displayPerson(person);
+      displayPerson(person);
+      break;
     case "family":
     // TODO: get person's family
     displayPersonFamily(person,people);
@@ -259,32 +260,33 @@ function recursiveTraitSearch(mm,people){
   //basecase
   if (masterMatches.length == 1){
     return masterMatches;
-  }else if (masterMatches.length === 0){
-    recursiveTraitSearch(people,people);
-  } 
+  }
 
   //recursive
-  displayPeople(masterMatches);
-  let userInput = prompt("What trait do you want to search for? \n 1. Height \n 2. Weight \n 3. Occupation \n 4. Eye Color \n 5. Gender");
-  switch (userInput){
-    case "1": 
-      masterMatches = searchByHeight(masterMatches);
-      break;
-    case "2":
-    masterMatches = searchByWeight(masterMatches);
-      break;
-    case "3":
-    masterMatches = searchByOccupation(masterMatches);
-      break;
-    case "4":
-    masterMatches = searchByEyeColor(masterMatches);  
-      break;
-    case "5":
-    masterMatches = searchByGender(masterMatches);
-      break;
-  
-    default: recursiveTraitSearch(masterMatches);
-      break;
+  let userInput;
+  while(userInput != "6"){
+    displayPeople(masterMatches);
+    userInput = prompt("What trait do you want to search for? \n 1. Height \n 2. Weight \n 3. Occupation \n 4. Eye Color \n 5. Gender \n 6. for Done");
+    switch (userInput){
+      case "1": 
+        masterMatches = searchByHeight(masterMatches);
+        break;
+      case "2":
+      masterMatches = searchByWeight(masterMatches);
+        break;
+      case "3":
+      masterMatches = searchByOccupation(masterMatches);
+        break;
+      case "4":
+      masterMatches = searchByEyeColor(masterMatches);  
+        break;
+      case "5":
+      masterMatches = searchByGender(masterMatches);
+        break;
+    
+      default:
+        break;
+    }
   }
-  recursiveTraitSearch(masterMatches);
+  return masterMatches
 }
