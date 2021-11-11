@@ -92,7 +92,14 @@ function searchByName(people){
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 function searchByEyeColor(people){
+  let possibleColors = ["brown","blue","black","hazel","green"]
   let eyeColor = promptFor("What is the person's eye color?", autoValid);
+  for (let i = 0; i < 5; i++){
+    if (eyeColor !== possibleColors[i]){
+      searchByEyeColor(people);
+    }
+
+  }
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.eyeColor === eyeColor){
@@ -222,17 +229,24 @@ function displayPersonFamily(person, people){
   displayPeople(family);
 }
 
+
 function displayPersonDescendants(person, people){
   let descendants = people
   descendants = people.filter(function(potentialMatch){
     if (potentialMatch.parents[0] === person[0].id || potentialMatch.parents[1] === person[0].id){
+      if(potentialMatch.id === person[0].id){
+        return false;
+      }else{
       return true;
-    }else{
-      return false;
+      }
     }
   })
   displayPeople(descendants);
 }
+
+
+
+
 
 
 
