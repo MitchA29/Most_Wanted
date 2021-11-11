@@ -53,6 +53,7 @@ function mainMenu(person, people){
     break;
     case "descendants":
     // TODO: get person's descendants
+    displayPersonDescendants(person,people);
     break;
     case "restart":
     app(people); // restart
@@ -189,22 +190,69 @@ function displayPerson(person){
 }
 
 function displayPersonFamily(person, people){
-  let family = []
-  let foundFamilyID;
-  if (person[0].currentSpouse != ""){
-    foundFamilyID = person[0].currentSpouse;
-  }
-  let foundPerson = people.filter(function(familyMember){
-    if(familyMember.id === foundFamilyID){
+  let family = people
+  family = people.filter(function(potentialMatch){
+    if(potentialMatch.parents[0] === person[0].parents[0] && potentialMatch.parents.length > 0){
+        if (potentialMatch.id === person[0].id){
+          return false;
+        }else{
+          return true;
+        }
+    }else{
+      if (potentialMatch.currentSpouse === person[0].id){
+        return true;
+      }
+      else if (potentialMatch.firstName === person[0].firstName){
+        if(potentialMatch.id === person[0].id){
+          return false;
+        }else{
+          return true;
+        }
+      }
+      else if (person[0].parents[0] === potentialMatch.id){
+        return true;
+      }
+      else if (person[0].parents[1] === potentialMatch.id){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  })
+  displayPeople(family);
+}
+
+function displayPersonDescendants(person, people){
+  let descendants = people
+  descendants = people.filter(function(potentialMatch){
+    if (potentialMatch.parents[0] === person[0].id || potentialMatch.parents[1] === person[0].id){
       return true;
     }else{
       return false;
     }
   })
-  family.push(foundPerson)
-  return family;
-
+  displayPeople(descendants);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //#endregion
 
